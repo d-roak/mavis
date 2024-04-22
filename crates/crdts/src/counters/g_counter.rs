@@ -4,7 +4,7 @@ use super::Counter;
 #[derive(Debug, Clone)]
 pub struct GCounter<T> {
     id: usize,
-    entries: Vec<T>,
+    pub entries: Vec<T>,
 }
 
 impl<T> GCounter<T> {
@@ -17,7 +17,7 @@ impl<T> GCounter<T> {
     }
 }
 
-impl Counter<u64> for GCounter<u64> {
+impl Counter<u64, GCounter<u64>> for GCounter<u64> {
     fn increment(&mut self) {
         self.entries[self.id] += 1;
     }
@@ -26,27 +26,22 @@ impl Counter<u64> for GCounter<u64> {
         unimplemented!("grow only counters can't decrement")
     }
 
-    fn entries(&self) -> Vec<u64> {
-        // self.entries
-        self.entries.clone()
-    }
-
     fn value(&self) -> u64 {
         self.entries.iter().sum()
     }
 
-    fn compare(&self, counter: Box<dyn Counter<u64>>) -> bool {
+    fn compare(&self, counter: GCounter<u64>) -> bool {
         for (i, entry) in self.entries.iter().enumerate() {
-            if *entry != counter.entries()[i] {
+            if *entry != counter.entries[i] {
                 return false;
             }
         }
         true
     }
 
-    fn merge(&mut self, counter: Box<dyn Counter<u64>>) {
+    fn merge(&mut self, counter: GCounter<u64>) {
         for (i, entry) in self.entries.iter_mut().enumerate() {
-            *entry = std::cmp::max(*entry, counter.entries()[i])
+            *entry = std::cmp::max(*entry, counter.entries[i])
         }
     }
 }
