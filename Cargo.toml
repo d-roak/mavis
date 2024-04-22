@@ -1,7 +1,5 @@
 [workspace]
 resolver = '2'
 members = [
+    "crates/crdts"
 ]
-
-[profile.release]
-lto = true
