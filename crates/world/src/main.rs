@@ -32,7 +32,7 @@ fn setup(
     // Rectangle
     commands.spawn(SpriteBundle {
         sprite: Sprite {
-            color: Color::rgb(0.25, 0.25, 0.75),
+            color: Color::rgb(1.0, 0.25, 0.75),
             custom_size: Some(Vec2::new(50.0, 100.0)),
             ..default()
         },

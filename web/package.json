@@ -3,8 +3,11 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"build:rust": "cargo build --release --bin mavis-world --target wasm32-unknown-unknown",
+		"build:wasm": "wasm-bindgen --out-dir src/assets/bevy --target web ../dist/target/wasm32-unknown-unknown/release/mavis-world.wasm",
+		"build:web": "vite build",
+		"build": "pnpm build:rust && pnpm build:wasm && pnpm build:web",
+		"dev": "pnpm build:rust && pnpm build:wasm && vite dev",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
